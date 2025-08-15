@@ -65,7 +65,7 @@
         width: 80vw;
         height: 80vw;
       }
-      #modal p {
+      #modal h1 {
         font-size: 1.5rem;
       }
     }
@@ -77,8 +77,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
@@ -89,12 +90,18 @@
       opacity: 0;
       pointer-events: none;
     }
-    #modal p {
+    #modal h1 {
       font-size: 2.5rem;
       color: #fff;
       font-style: italic;
       text-align: center;
-      margin: 0;
+      cursor: pointer;
+    }
+    #modal p {
+      font-size: 1rem;
+      color: #fff;
+      font-style: italic;
+      text-align: center;
       cursor: pointer;
     }
   </style>
@@ -103,7 +110,9 @@
 
   <!-- Modal -->
   <div id="modal">
-    <p>enter the archive</p>
+    <h1>enter the archive</h1>
+    <br>
+    <p>(sound required)</p>
   </div>
 
   <h1>everyday archive</h1>
