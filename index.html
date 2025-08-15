@@ -142,38 +142,54 @@
         const gallery = document.getElementById('gallery');
 
         data.forEach(item => {
-          const container = document.createElement('div');
-          container.className = 'img-container';
+  const container = document.createElement('div');
+  container.className = 'img-container';
 
-          const img = document.createElement('img');
-          img.src = item.image;
-          img.alt = '';
+  const img = document.createElement('img');
+  img.src = item.image;
+  img.alt = '';
 
-          const audio = document.createElement('audio');
-          audio.src = item.audio;
+  const audio = document.createElement('audio');
+  audio.src = item.audio;
 
-          container.addEventListener('mouseenter', () => {
-            if (currentlyPlaying && currentlyPlaying !== audio) {
-              currentlyPlaying.pause();
-              currentlyPlaying.currentTime = 0;
-            }
-            currentlyPlaying = audio;
-            audio.currentTime = 0;
-            audio.play().catch(err => console.warn('Audio play prevented:', err));
-          });
+  // Play audio and color image on hover
+  container.addEventListener('mouseenter', () => {
+    if (currentlyPlaying && currentlyPlaying !== audio) {
+      currentlyPlaying.pause();
+      currentlyPlaying.currentTime = 0;
+      currentlyPlaying.parentElement.querySelector('img').style.filter =
+        'grayscale(100%) sepia(30%) hue-rotate(-20deg) saturate(2)';
+    }
+    currentlyPlaying = audio;
+    audio.currentTime = 0;
+    audio.play().catch(err => console.warn('Audio play prevented:', err));
 
-          container.addEventListener('mouseleave', () => {
-            audio.pause();
-            audio.currentTime = 0;
-            if (currentlyPlaying === audio) {
-              currentlyPlaying = null;
-            }
-          });
+    img.style.filter = 'grayscale(0%) sepia(0%) hue-rotate(0deg) saturate(1)';
+  });
 
-          container.appendChild(img);
-          container.appendChild(audio);
-          gallery.appendChild(container);
-        });
+  // Pause audio on mouse leave
+  container.addEventListener('mouseleave', () => {
+    audio.pause();
+    audio.currentTime = 0;
+    img.style.filter = 'grayscale(100%) sepia(30%) hue-rotate(-20deg) saturate(2)';
+    if (currentlyPlaying === audio) {
+      currentlyPlaying = null;
+    }
+  });
+
+  // Reset image filter when audio ends naturally
+  audio.addEventListener('ended', () => {
+    img.style.filter = 'grayscale(100%) sepia(30%) hue-rotate(-20deg) saturate(2)';
+    if (currentlyPlaying === audio) {
+      currentlyPlaying = null;
+    }
+  });
+
+  container.appendChild(img);
+  container.appendChild(audio);
+  gallery.appendChild(container);
+});
+
       } catch (error) {
         console.error('Error loading gallery:', error);
       }
